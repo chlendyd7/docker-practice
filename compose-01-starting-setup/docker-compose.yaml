@@ -1,0 +1,32 @@
+services:
+  mongodb:
+    image: 'mongo'
+    volumes:
+      - data:/data/db
+    env_file:
+      - ./env/mongo.env
+    # networks:
+    #   - goals-net
+  backend:
+    build: ./backend
+    # build:
+    #   context: ./backend
+    #   dockerfile: Dockerfile 이렇게 도커 파일 명시 가능
+    #   args:
+    #    some-args: 1
+    ports:
+      - '80:80'
+    volumes:
+      - logs:/app/logs
+      - ./backend:/app #bindmount
+      - /app/node_modules
+    env_file:
+      - ./env/backend.env
+    depends_on:
+      - mongodb
+
+  # frontend:
+
+volumes:
+  data:
+  logs:
