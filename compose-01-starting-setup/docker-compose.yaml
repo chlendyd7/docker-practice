@@ -25,7 +25,19 @@ services:
     depends_on:
       - mongodb
 
-  # frontend:
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend/src:/app/src
+    # interactive mode
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+    environment:
+      - NODE_OPTIONS=--openssl-legacy-provider
 
 volumes:
   data:
